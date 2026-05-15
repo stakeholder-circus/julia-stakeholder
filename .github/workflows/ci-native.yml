@@ -4,12 +4,16 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
-  scaffold-check:
+  native-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: julia-actions/setup-julia@v2
         with:
-          python-version: '3.x'
+          version: '1.11'
+      - run: julia --project=. -e 'using Pkg; Pkg.test()'
       - run: python3 scripts/validate_scaffold.py

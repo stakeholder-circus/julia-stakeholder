@@ -1,0 +1,13 @@
+name = "Stakeholder"
+uuid = "bb840b6c-5895-4aef-9d78-36b67ca5a53d"
+authors = ["stakeholder-circus contributors"]
+version = "0.1.0"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
+
+[compat]
+julia = "1.10"

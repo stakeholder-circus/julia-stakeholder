@@ -1,16 +1,21 @@
-# Rust Example Outputs
+# Julia Example Outputs
 
-## Security
+## List values
 ```bash
-cargo run -- --dev-type security --jargon high --complexity extreme --alerts --seed 42
+julia --project=. src/Stakeholder.jl --list-values
 ```
 
-## Blockchain
+## Dedicated classic-six JSON
 ```bash
-cargo run -- --dev-type blockchain --framework "rollup-mcp-gateway" --output-format json --seed 7
+julia --project=. src/Stakeholder.jl --output-format json --seed 42 --focus-family code-analyzer
 ```
 
-## Healthcare + charging + quantum crossover
+## Dedicated modern-core text
 ```bash
-cargo run -- --project "hospital-ocpp-quantum-control" --framework "mcp grpc" --jargon extreme --team --trace --seed 11
+julia --project=. src/Stakeholder.jl --focus-family agent-workflows --jargon extreme
+```
+
+## Grouped fallback
+```bash
+julia --project=. src/Stakeholder.jl --output-format json --seed 7 --focus-family mcp-a2a-ops
 ```

@@ -1,19 +1,14 @@
-# Rust Tooling
+# Julia Tooling
 
 ## Commands
-- `cargo fmt`
-- `cargo clippy -- -D warnings`
-- `cargo build`
-- `cargo test`
-- `docker build -t rust-stakeholder .`
-- `docker run --rm rust-stakeholder --list-values`
+```bash
+julia --project=. -e 'using Pkg; Pkg.test()'
+python3 scripts/validate_scaffold.py
+julia --project=. src/Stakeholder.jl --output-format json --seed 42 --focus-family code-analyzer
+```
 
-## Extended local checks
-- `cargo nextest run`
-- `cargo audit`
-- `cargo deny check`
-- `cargo udeps`
-
-## Notes
-- The Docker path is the reproducible Linux baseline.
-- Native CI should still cover macOS and Windows semantics.
+## CI checks
+- Native Julia tests on Ubuntu, macOS, and Windows.
+- Validation script on Ubuntu.
+- Docker smoke on Ubuntu.
+- Actionlint and dependency-review workflows remain repository hygiene checks.

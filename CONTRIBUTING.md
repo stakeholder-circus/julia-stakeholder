@@ -1,19 +1,16 @@
-# Contributing to rust-stakeholder
+# Contributing to julia-stakeholder
 
 ## Rules
-- Treat Rust as the source-of-truth baseline for downstream ports.
+- Treat Rust as the source-of-truth baseline and Java as the first substantial follower audit signal.
 - Use Conventional Commits.
-- Do not land silent behavioral changes; update `stakeholder-core` traceability and docs in the same tranche.
-- Keep deterministic seeded behavior stable unless the change is explicitly documented as a baseline evolution.
+- Do not land silent behavioral changes; update traceability and `GAPS.md` when behavior changes.
+- Keep deterministic seeded JSON stable unless the change is explicitly documented as baseline evolution.
+- Preserve the MIT license notice in [LICENSE](LICENSE).
 
 ## Local workflow
-- `cargo fmt`
-- `cargo clippy -- -D warnings`
-- `cargo test`
-- `docker build -t rust-stakeholder .`
-- `docker run --rm rust-stakeholder --list-values`
-
-## Change discipline
-- Generator-family additions must update docs, examples, and fixtures.
-- Experimental provider work must stay clearly separated from deterministic parity paths.
-- Prefer additive event-schema evolution over breaking changes.
+```bash
+julia --project=. -e 'using Pkg; Pkg.test()'
+python3 scripts/validate_scaffold.py
+docker build -t julia-stakeholder .
+docker run --rm julia-stakeholder --list-values
+```

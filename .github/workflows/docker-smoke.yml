@@ -4,10 +4,13 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   docker-smoke:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: docker build -t julia-stakeholder .
-      - run: docker run --rm julia-stakeholder
+      - run: docker run --rm julia-stakeholder --output-format json --seed 42 --focus-family code-analyzer

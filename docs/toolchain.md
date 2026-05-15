@@ -1,15 +1,26 @@
-  # Julia Toolchain
+# Julia Toolchain
 
-  - State: scaffold-only next-20 prep
-  - Toolchain source: `brew`
+- State: Tranche C deterministic-first runtime
+- Minimum Julia: 1.10
+- Preferred local install: `brew install julia`
 
-  ## Planned commands after promotion
-    - `brew install julia`
-- `julia -e 'println(VERSION)'`
+## Native commands
+```bash
+julia --project=. -e 'using Pkg; Pkg.test()'
+python3 scripts/validate_scaffold.py
+julia --project=. src/Stakeholder.jl --list-values
+julia --project=. src/Stakeholder.jl --output-format json --seed 42 --focus-family code-analyzer
+```
 
-  ## Scaffold-time checks
-  - `python3 scripts/validate_scaffold.py`
-  - `/nix/var/nix/profiles/default/bin/nix --extra-experimental-features 'nix-command flakes' flake lock`
+## Nix commands
+```bash
+nix flake check
+nix run .#check
+nix run .#julia-stakeholder -- --list-values
+```
 
-  ## Current limitation
-  - Requires a Brew install before implementation.
+## Docker commands
+```bash
+docker build -t julia-stakeholder .
+docker run --rm julia-stakeholder --list-values
+```

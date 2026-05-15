@@ -1,9 +1,10 @@
-# Rust Docker
+# Julia Docker
 
-## Build and test
-- `docker build -t rust-stakeholder .`
-- `docker run --rm rust-stakeholder --list-values`
+## Build and smoke
+```bash
+docker build -t julia-stakeholder .
+docker run --rm julia-stakeholder --list-values
+docker run --rm julia-stakeholder --output-format json --seed 42 --focus-family code-analyzer
+```
 
-## Rationale
-- The image compiles and tests the Rust baseline before packaging the runtime binary.
-- Docker is the reproducible Linux gate; host and CI matrices still cover native OS behavior.
+The image runs native Julia tests during build, then packages the CLI with `src/Stakeholder.jl` as the entrypoint.

@@ -1,4 +1,10 @@
-FROM alpine:3.20
+FROM julia:1.11-bookworm
 LABEL org.opencontainers.image.title="julia-stakeholder"
-LABEL org.opencontainers.image.description="Scaffold-only placeholder container for julia-stakeholder"
-CMD ["sh", "-lc", "echo 'julia-stakeholder scaffold-only baseline';"]
+LABEL org.opencontainers.image.description="Julia deterministic-first stakeholder CLI"
+WORKDIR /app
+COPY Project.toml ./
+COPY src ./src
+COPY test ./test
+RUN julia --project=. -e 'using Pkg; Pkg.test()'
+ENTRYPOINT ["julia", "--project=/app", "/app/src/Stakeholder.jl"]
+CMD ["--list-values"]
