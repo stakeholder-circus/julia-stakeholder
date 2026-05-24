@@ -2,9 +2,9 @@
 
 - Role: Tranche C deterministic-first Julia port
 - Parity class: full-parity target with deterministic-first tranche scope
-- State: implemented-local-only
-- Rewrite completeness: 42%
-- Functionality completeness: 36%
+- State: native-validated local deterministic tranche
+- Rewrite completeness: 46%
+- Functionality completeness: 40%
 - Branch: `main`
 - Origin: `git@github.com:stakeholder-circus/julia-stakeholder.git`
 - Upstream: `https://github.com/giacomo-b/rust-stakeholder`
@@ -16,6 +16,13 @@
 - Implemented dedicated classic-six and modern-core families.
 - Added grouped fallback for later families.
 - Updated native tests, validation script, CI workflows, Dockerfile, flake, docs, and traceability notes.
+
+## Evidence
+- `python3 scripts/validate_scaffold.py`
+- Julia `Pkg.test()` via scaffold validation
+- `julia --project=. src/Stakeholder.jl --list-values`
+- same-seed deterministic JSON diff for `platform-engineering`
+- explicit `--experimental-provider local-demo` fail-fast smoke
 
 ## Remaining
 - Live provider runtime remains deferred and fail-fast.
