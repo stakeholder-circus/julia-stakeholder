@@ -1,4 +1,4 @@
-FROM julia:1.11-bookworm
+FROM julia:1.12-bookworm
 LABEL org.opencontainers.image.title="julia-stakeholder"
 LABEL org.opencontainers.image.description="Julia deterministic-first stakeholder CLI"
 WORKDIR /app
