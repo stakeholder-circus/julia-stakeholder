@@ -13,5 +13,5 @@ jobs:
   julia-codeql-note:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo "CodeQL does not currently analyze Julia in this repo; native and Docker workflows are authoritative."
