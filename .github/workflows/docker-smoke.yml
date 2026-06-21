@@ -11,6 +11,6 @@ jobs:
   docker-smoke:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker build -t julia-stakeholder .
       - run: docker run --rm julia-stakeholder --output-format json --seed 42 --focus-family code-analyzer
