@@ -11,9 +11,10 @@ required = [
     '.github/dependabot.yml', '.github/workflows/actionlint.yml',
     '.github/workflows/dependency-review.yml', '.github/workflows/ci.yml',
     '.github/workflows/ci-native.yml', '.github/workflows/docker-smoke.yml', 'flake.nix',
-    'Dockerfile', 'flake.lock',
+    '.github/workflows/source-analysis.yml', '.github/workflows/security-analysis.yml',
+    'test/jet.jl', 'Dockerfile', 'flake.lock',
 ]
-forbidden = ['Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml']
+forbidden = ['Cargo.toml', 'Cargo.lock', 'rust-toolchain.toml', '.github/workflows/codeql.yml']
 missing = [p for p in required if not Path(p).exists()]
 leftovers = [p for p in forbidden if Path(p).exists()]
 leftovers += [str(p) for p in Path('src').glob('*.rs')]

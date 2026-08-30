@@ -71,14 +71,57 @@ function parse_args(argv)::Config
             error("unexpected positional argument $a")
         end
     end
-    for (name, allowed) in [("dev-type", DEV_TYPES), ("jargon", JARGON_LEVELS), ("complexity", COMPLEXITIES), ("output-format", OUTPUT_FORMATS)]
-        v[name] in allowed || error("invalid --$name '$(v[name])'; expected one of $(join(allowed, ", "))")
+
+    function string_value(name::String)::String
+        value = v[name]
+        value isa String || error("internal parser type mismatch for --$name")
+        value
     end
-    v["focus-family"] = v["focus-family"] === nothing ? nothing : replace(v["focus-family"], "_" => "-")
-    v["focus-family"] === nothing || v["focus-family"] in ALL_FAMILIES || error("invalid --focus-family '$(v["focus-family"])'; use --list-values for supported families")
-    seed = v["seed"] === nothing ? nothing : parse(UInt64, v["seed"])
-    duration = parse(Int, string(v["duration"])); duration >= 0 || error("--duration must be zero or greater")
-    Config(v["dev-type"], v["jargon"], v["complexity"], duration, v["alerts"], v["project"], v["minimal"], v["team"], v["framework"], v["list-values"], v["focus-family"], v["output-format"], seed, v["experimental-provider"])
+
+    function bool_value(name::String)::Bool
+        value = v[name]
+        value isa Bool || error("internal parser type mismatch for --$name")
+        value
+    end
+
+    function optional_string_value(name::String)::Union{Nothing,String}
+        value = v[name]
+        value === nothing && return nothing
+        value isa String || error("internal parser type mismatch for --$name")
+        value
+    end
+
+    for (name, allowed) in [("dev-type", DEV_TYPES), ("jargon", JARGON_LEVELS), ("complexity", COMPLEXITIES), ("output-format", OUTPUT_FORMATS)]
+        value = string_value(name)
+        value in allowed || error("invalid --$name '$value'; expected one of $(join(allowed, ", "))")
+    end
+
+    focus_value = optional_string_value("focus-family")
+    focus_family = focus_value === nothing ? nothing : replace(focus_value, "_" => "-")
+    focus_family === nothing || focus_family in ALL_FAMILIES || error("invalid --focus-family '$focus_family'; use --list-values for supported families")
+
+    seed_value = optional_string_value("seed")
+    seed = seed_value === nothing ? nothing : parse(UInt64, seed_value)
+    duration_value = v["duration"]
+    duration = duration_value isa Int ? duration_value : duration_value isa String ? parse(Int, duration_value) : error("internal parser type mismatch for --duration")
+    duration >= 0 || error("--duration must be zero or greater")
+
+    Config(
+        string_value("dev-type"),
+        string_value("jargon"),
+        string_value("complexity"),
+        duration,
+        bool_value("alerts"),
+        string_value("project"),
+        bool_value("minimal"),
+        bool_value("team"),
+        string_value("framework"),
+        bool_value("list-values"),
+        focus_family,
+        string_value("output-format"),
+        seed,
+        optional_string_value("experimental-provider"),
+    )
 end
 
 function message(family::String, jargon::String)::String
