@@ -1,0 +1,29 @@
+name: source-analysis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '19 3 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  jet-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: julia-actions/setup-julia@4c0cb0fce8556fdb04a90347310e5db8b1f98fb9 # v2
+        with:
+          version: '1.11'
+      - name: Install pinned JET analyzer in a temporary environment
+        run: |
+          julia -e 'using Pkg; Pkg.activate("/tmp/stakeholder-jet"); Pkg.develop(path=pwd()); Pkg.add(PackageSpec(name="JET", version="0.9.20")); Pkg.precompile()'
+      - name: Analyze representative CLI paths
+        run: julia --project=/tmp/stakeholder-jet test/jet.jl
